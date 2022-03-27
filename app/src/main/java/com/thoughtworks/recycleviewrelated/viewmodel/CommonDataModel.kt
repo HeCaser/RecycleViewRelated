@@ -14,11 +14,11 @@ class CommonDataModel : ViewModel() {
 
     init {
         for (i in 0 until 10) {
-            mList.add("Hello $i 你好啊 ")
+            mList.add("Hello, 你好啊 ")
         }
     }
 
-    fun requestStringList() {
+    fun getStringList() {
         mHandler.postDelayed({
             mStringList.postValue(mList)
         }, 1000)

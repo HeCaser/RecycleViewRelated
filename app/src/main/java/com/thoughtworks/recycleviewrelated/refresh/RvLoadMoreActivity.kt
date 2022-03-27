@@ -2,6 +2,7 @@ package com.thoughtworks.recycleviewrelated.refresh
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thoughtworks.recycleviewrelated.R
@@ -18,25 +19,58 @@ class RvLoadMoreActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.rv_load_more_activity)
         viewModel = ViewModelProviders.of(this).get(CommonDataModel::class.java)
+        initListener()
+
         initViewAndData()
     }
 
+    fun initListener(){
+        tvTop.setOnClickListener {
+            viewModel.getStringList()
+        }
+        tvScroll.setOnClickListener {
+            recyclerView.smoothScrollToPosition(4)
+        }
+    }
     fun initViewAndData() {
+        smartRefresh?.apply {
+            setEnableRefresh(false)
+            setEnableAutoLoadMore(false)
+            setOnLoadMoreListener {
+                viewModel.getStringList()
+            }
+        }
         mAdapter = RvCommonAdapter(mDataList)
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager =
-                LinearLayoutManager(this@RvLoadMoreActivity, LinearLayoutManager.VERTICAL, false)
+                SnappingLinearLayoutManager(
+                    this@RvLoadMoreActivity,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
             adapter = mAdapter
         }
-        tvTop.setOnClickListener {
-            viewModel.requestStringList()
-        }
 
 
-        viewModel.mStringList.observe(this,{
-            mDataList.addAll(it)
-            mAdapter.notifyDataSetChanged()
+
+
+        viewModel.mStringList.observe(this, {
+            handleRequestSuccess(it)
+
         })
+    }
+
+    private fun handleRequestSuccess(l: List<String>) {
+        val size = mDataList.size
+       val target =  if (size == 0) 0 else size
+        mDataList.addAll(l)
+        mAdapter.notifyDataSetChanged()
+        smartRefresh.finishLoadMore()
+
+        Handler().postDelayed({
+            recyclerView.smoothScrollToPosition(target)
+        }, 1500)
+
     }
 }

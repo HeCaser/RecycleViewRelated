@@ -4,17 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rv_load_more"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-   <TextView
-       android:id="@+id/tvTop"
-       android:background="@color/colorPrimary"
-       android:layout_width="match_parent"
-       android:layout_height="40dp"/>
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/recyclerView"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+    <TextView
+        android:text="获取数据"
+        android:textColor="#ffffffff"
+        android:id="@+id/tvTop"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:text="滚动"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/tvScroll"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary" />
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:layout_marginTop="15dp"
+        android:id="@+id/smartRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 
 </LinearLayout>
