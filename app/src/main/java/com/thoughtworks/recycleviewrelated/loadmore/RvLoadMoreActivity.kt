@@ -76,7 +76,7 @@ class RvLoadMoreActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             recyclerView.smoothScrollToPosition(target)
-        }, 1500)
+        }, 1000)
 
     }
 }

@@ -2,12 +2,14 @@ package com.thoughtworks.recycleviewrelated.loadmore
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.FocusFinder
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.NonNull
 import com.scwang.smart.refresh.classics.ClassicsAbstract
 import com.scwang.smart.refresh.layout.api.RefreshFooter
+import com.scwang.smart.refresh.layout.api.RefreshKernel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.thoughtworks.recycleviewrelated.R
@@ -27,11 +29,13 @@ open class FundLoadMoreFooter @JvmOverloads constructor(
     protected var mTextNothing = "没有更多数据了"
 
     protected var mNoMoreData = false
+    private  var mKernel: RefreshKernel?=null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.fund_load_more_footer, this)
 
         mTitleText = tvTitle
+        ivLoading.visibility = View.INVISIBLE
         // 基类中用到，这里直接创建，防止空指针
         mArrowView = ImageView(context)
         mProgressView = ImageView(context)
@@ -85,6 +89,8 @@ open class FundLoadMoreFooter @JvmOverloads constructor(
                 }
                 RefreshState.ReleaseToLoad -> {
                     mTitleText.text = mTextRelease
+                    ivLoading.visibility = View.VISIBLE
+                    ivLoading.setBackgroundColor(resources.getColor(R.color.color_ff0033))
                 }
                 RefreshState.Refreshing -> {
                     mTitleText.text = mTextRefreshing
@@ -93,4 +99,28 @@ open class FundLoadMoreFooter @JvmOverloads constructor(
         }
     }
 
+    override fun onInitialized(kernel: RefreshKernel, height: Int, maxDragHeight: Int) {
+        super.onInitialized(kernel, height, maxDragHeight)
+        mKernel = kernel
+    }
+
+    override fun onMoving(
+        isDragging: Boolean,
+        percent: Float,
+        offset: Int,
+        height: Int,
+        maxDragHeight: Int
+    ) {
+//        if (percent > 0.5f) {
+//            mKernel?.setState(RefreshState.Loading)
+//        }
+        setViewAlpha(percent)
+        super.onMoving(isDragging, percent, offset, height, maxDragHeight)
+
+    }
+
+
+    fun setViewAlpha(alpha: Float) {
+        ivLoading.alpha = alpha
+    }
 }
