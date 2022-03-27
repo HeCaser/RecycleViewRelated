@@ -1,4 +1,4 @@
-package com.thoughtworks.recycleviewrelated.refresh
+package com.thoughtworks.recycleviewrelated.loadmore
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +10,11 @@ import com.thoughtworks.recycleviewrelated.adapter.RvCommonAdapter
 import com.thoughtworks.recycleviewrelated.viewmodel.CommonDataModel
 import kotlinx.android.synthetic.main.rv_load_more_activity.*
 
+/**
+ * 雪球需求，修改加载更多的交互。
+ *
+ * 上拉 Footer ，有文案，有 lottie。
+ */
 class RvLoadMoreActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CommonDataModel
@@ -34,6 +39,7 @@ class RvLoadMoreActivity : AppCompatActivity() {
     }
     fun initViewAndData() {
         smartRefresh?.apply {
+            setRefreshFooter(FundLoadMoreFooter(this@RvLoadMoreActivity))
             setEnableRefresh(false)
             setEnableAutoLoadMore(false)
             setOnLoadMoreListener {

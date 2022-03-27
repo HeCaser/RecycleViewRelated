@@ -1,4 +1,4 @@
-package com.thoughtworks.recycleviewrelated.refresh
+package com.thoughtworks.recycleviewrelated.loadmore
 
 import android.content.Context
 import android.graphics.PointF
@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 
-
+/**
+ * 控制滑动时在,目标 Item 在 Rv 顶部。
+ */
 class SnappingLinearLayoutManager(context: Context, orientation: Int, reverseLayout: Boolean): LinearLayoutManager(context, orientation, reverseLayout) {
 
 
